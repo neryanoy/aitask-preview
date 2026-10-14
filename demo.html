@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live demo — the AiTask office dashboard (sample data)</title>
+<meta name="description" content="Click through the AiTask office: clients, projects, quotes, e-signatures, invoices, receipts, calendar, crew, accounting and the WhatsApp agent that runs it. Fictional data.">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body{background:var(--bg2)}
+  .dtop{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line)}
+  .dtop .wrap{display:flex;align-items:center;gap:.8rem;height:60px;max-width:1500px}
+  .dtop .pill{margin-left:.2rem}
+  .dtop .sp{margin-left:auto;display:flex;gap:.5rem;align-items:center}
+  @media(max-width:700px){.dtop .hide-m{display:none}}
+
+  .app{display:grid;grid-template-columns:200px minmax(0,1fr) 360px;gap:1rem;max-width:1500px;margin:1rem auto;padding:0 16px;align-items:start}
+  @media(max-width:1200px){.app{grid-template-columns:180px minmax(0,1fr) 330px}}
+  @media(max-width:980px){.app{grid-template-columns:1fr}}
+  .side{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:.6rem;position:sticky;top:76px}
+  .side button{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;border:0;background:none;padding:.6rem .7rem;border-radius:9px;font:inherit;font-weight:550;color:var(--muted);cursor:pointer;font-size:.92rem}
+  .side button:hover{background:var(--bg2);color:var(--navy)}
+  .side button.on{background:var(--navy);color:#fff}
+  .side button .n{margin-left:auto;background:var(--bad);color:#fff;font-size:.68rem;padding:.1em .5em;border-radius:999px;font-weight:700}
+  .side button.on .n{background:var(--teal)}
+  .side .biz{padding:.5rem .7rem .8rem;border-bottom:1px solid var(--line);margin-bottom:.5rem}
+  .side .biz b{display:block;color:var(--navy)}
+  .side .biz small{color:var(--faint)}
+  @media(max-width:980px){
+    .side{position:sticky;top:60px;z-index:40;display:flex;gap:.2rem;overflow-x:auto;padding:.4rem;border-radius:0;margin:0 -16px;border-left:0;border-right:0;scrollbar-width:none}
+    .side .biz{display:none}
+    .side button{width:auto;white-space:nowrap;padding:.5rem .7rem;font-size:.86rem}
+  }
+  .main{min-width:0}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem;margin-bottom:1rem;box-shadow:var(--sh)}
+  .panel h2{font-size:1.2rem;margin-bottom:.2rem}
+  .panel h3{font-size:1rem;margin:0 0 .6rem}
+  .ph{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .ph .sp{margin-left:auto;display:flex;gap:.4rem;flex-wrap:wrap}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+  @media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:11px;padding:.8rem .95rem}
+  .kpi b{display:block;font-size:1.35rem;color:var(--navy);letter-spacing:-.02em}
+  .kpi span{color:var(--faint);font-size:.78rem}
+  .kpi.t b{color:var(--teal-d)}.kpi.w b{color:var(--warn)}.kpi.b b{color:var(--bad)}
+  .list{display:flex;flex-direction:column;gap:.45rem}
+  .row{display:flex;align-items:center;gap:.7rem;border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem;background:#fff;font-size:.9rem;cursor:pointer;transition:.12s}
+  .row:hover{border-color:#c9d3df;background:#fbfcfe}
+  .row .ttl{font-weight:600;color:var(--navy)}
+  .row .sub{color:var(--faint);font-size:.8rem}
+  .row .r{margin-left:auto;display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .row .amt{font-weight:650;color:var(--navy);white-space:nowrap}
+  .av{width:34px;height:34px;border-radius:50%;background:var(--blue-bg);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex:none}
+  .av.t{background:var(--teal-bg);color:var(--teal-d)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:800px){.two{grid-template-columns:1fr}}
+  .empty{color:var(--faint);font-size:.88rem;padding:.6rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  th{text-align:left;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:650;padding:.45rem .5rem;border-bottom:1px solid var(--line)}
+  td{padding:.55rem .5rem;border-bottom:1px solid var(--bg3);vertical-align:middle}
+  td.num,th.num{text-align:right;white-space:nowrap}
+  tr.clk{cursor:pointer}tr.clk:hover td{background:#fbfcfe}
+  .prog{height:7px;background:var(--bg3);border-radius:99px;overflow:hidden}
+  .prog i{display:block;height:100%;background:var(--teal);border-radius:99px}
+  .chips{display:flex;gap:.35rem;flex-wrap:wrap}
+  .tl{border-left:2px solid var(--line);margin-left:.5rem;padding-left:1rem;display:flex;flex-direction:column;gap:.6rem}
+  .tl div{position:relative;font-size:.86rem}
+  .tl div::before{content:"";position:absolute;left:-1.42rem;top:.4em;width:9px;height:9px;border-radius:50%;background:var(--teal);border:2px solid #fff}
+  .tl small{display:block;color:var(--faint)}
+  .back{border:0;background:none;color:var(--blue);font:inherit;cursor:pointer;padding:0;font-weight:600}
+  .bk{display:flex;flex-direction:column;gap:.35rem}
+
+  /* calendar */
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .cal .dh{font-size:.7rem;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;text-align:center;padding:.3rem 0}
+  .cal .d{min-height:78px;border:1px solid var(--line);border-radius:8px;padding:.3rem;font-size:.72rem;background:#fff;position:relative}
+  .cal .d.o{opacity:.35}.cal .d.today{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
+  .cal .d .n{color:var(--faint);font-weight:600}
+  .cal .ev{margin-top:.2rem;border-radius:5px;padding:.15rem .35rem;font-size:.68rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+  .ev.job{background:var(--teal-bg);color:var(--teal-d)}.ev.visit{background:#efe8fb;color:#6d3fc5}.ev.pencil{background:var(--warn-bg);color:var(--warn);border:1px dashed #f0c27a}
+  .ev.job.lk{background:var(--blue-bg);color:var(--blue)}
+  @media(max-width:600px){.cal .d{min-height:54px}.cal .ev{font-size:.6rem;padding:.1rem .2rem}}
+
+  /* whatsapp panel */
+  .wa{position:sticky;top:76px}
+  .wa .phone{max-width:none;border-radius:var(--r)}
+  .wa .chat{min-height:420px;max-height:calc(100vh - 290px);overflow-y:auto;scroll-behavior:smooth}
+  @media(max-width:980px){.wa{position:static}.wa .chat{max-height:none;min-height:360px}}
+  .wa-ctl{display:flex;gap:.5rem;padding:.6rem .8rem;background:#fff;border-top:1px solid var(--line);align-items:center;flex-wrap:wrap}
+  .wa-ctl .st{font-size:.76rem;color:var(--faint);margin-left:auto}
+  .msg .doc{display:block;margin-top:.4rem;background:#fff;border:1px solid #d5efe2;border-radius:8px;padding:.45rem .6rem;font-size:.8rem;color:var(--navy);text-decoration:none}
+  .msg .doc b{display:block}
+  .msg .doc:hover{background:#f4fbf7}
+  .msg.in .doc{border-color:var(--line)}
+  .msg .img{display:block;width:100%;height:92px;border-radius:7px;margin-bottom:.35rem;background:linear-gradient(135deg,#dfe7ef,#c7d3df);position:relative}
+  .msg .img::after{content:attr(data-l);position:absolute;inset:auto .5rem .4rem;font-size:.68rem;color:#2d3b4b;background:rgba(255,255,255,.8);padding:.1rem .4rem;border-radius:4px;width:max-content}
+  .msg.li{background:#fff;border-left:4px solid #0a66c2}
+  .typing{align-self:flex-start;background:#fff;border-radius:10px;padding:.5rem .8rem;font-size:.8rem;color:#889;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+  .typing i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#aab;margin-right:3px;animation:b 1s infinite}
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes b{0%,80%,100%{opacity:.3}40%{opacity:1}}
+  .flash{animation:fl 1.2s}
+  @keyframes fl{0%{background:#fff7d6}100%{background:transparent}}
+
+  /* document modal */
+  .modal{position:fixed;inset:0;background:rgba(15,27,45,.55);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow:auto}
+  .modal.on{display:flex}
+  .mbox{background:#fff;border-radius:14px;width:100%;max-width:820px;box-shadow:var(--sh-l);overflow:hidden}
+  .mbar{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-bottom:1px solid var(--line);background:var(--bg2);flex-wrap:wrap}
+  .mbar .sp{margin-left:auto;display:flex;gap:.4rem;flex-wrap:wrap}
+  .doc{padding:2.2rem 2.4rem;color:#1b2634;font-size:.92rem}
+  @media(max-width:600px){.doc{padding:1.3rem 1rem}}
+  .doc .hd{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;border-bottom:3px solid var(--navy);padding-bottom:1rem;margin-bottom:1.2rem}
+  .doc .logo{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.25rem;color:var(--navy)}
+  .doc .logo i{width:38px;height:38px;border-radius:9px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:1.1rem}
+  .doc .logo small{display:block;font-weight:500;font-size:.72rem;color:var(--muted)}
+  .doc .dt{text-align:right}
+  .doc .dt b{display:block;font-size:1.3rem;color:var(--navy);letter-spacing:-.02em}
+  .doc .dt span{display:block;font-size:.8rem;color:var(--muted)}
+  .doc .meta{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;font-size:.88rem}
+  .doc .meta b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:.2rem}
+  .doc table th{background:var(--bg2)}
+  .doc .tot{margin:1rem 0 0 auto;width:min(320px,100%);font-size:.9rem}
+  .doc .tot div{display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid var(--bg3)}
+  .doc .tot div.g{font-weight:800;font-size:1.05rem;color:var(--navy);border-bottom:0;border-top:2px solid var(--navy);margin-top:.3rem;padding-top:.5rem}
+  .doc .sec{margin-top:1.3rem}
+  .doc .sec h4{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 .3rem}
+  .doc .sec p,.doc .sec li{font-size:.84rem;color:var(--muted);margin:0}
+  .doc .sign{margin-top:1.6rem;border:1px dashed #c8d1dc;border-radius:10px;padding:1rem;text-align:center}
+  .doc .sign .sig{font-family:"Brush Script MT","Segoe Script",cursive;font-size:1.7rem;color:#1b2f7a}
+  .doc .paid{display:inline-block;border:3px solid var(--ok);color:var(--ok);font-weight:800;letter-spacing:.15em;padding:.2rem .8rem;transform:rotate(-8deg);border-radius:6px;font-size:1.1rem}
+  .doc .pay{background:var(--bg2);border-radius:9px;padding:.8rem 1rem;font-size:.85rem;margin-top:1rem}
+
+  .opt{display:flex;gap:.8rem;align-items:center;border:1px solid var(--line);border-radius:10px;padding:.8rem .9rem;background:#fff}
+  .opt .ic{margin:0;width:36px;height:36px;font-size:1rem;flex:none}
+  .opt h4{margin:0;font-size:.95rem}
+  .opt p{margin:0;font-size:.82rem;color:var(--muted)}
+  .sw{margin-left:auto;width:42px;height:24px;border-radius:99px;background:#d5dbe3;position:relative;cursor:pointer;flex:none;transition:.15s}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+  .sw.on{background:var(--teal)}.sw.on::after{left:21px}
+  .opt.off{opacity:.55}
+  .banner{background:var(--navy);color:#fff;border-radius:var(--r);padding:1.3rem 1.4rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin:1rem 0}
+  .banner h3{color:#fff;margin:0}
+  .banner p{margin:.2rem 0 0;color:#c7d0dc;font-size:.9rem}
+  .banner .sp{margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:.6rem 1rem;border-radius:10px;font-size:.86rem;z-index:120;box-shadow:var(--sh-l);opacity:0;transition:.25s;pointer-events:none}
+  .toast.on{opacity:1}
+</style>
+</head>
+<body>
+
+<header class="dtop">
+  <div class="wrap">
+    <a class="brand" href="./" title="AiTask home">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="16" fill="#0f1b2d"/><rect x="6" y="6" width="52" height="52" rx="13" fill="none" stroke="#16b5aa" stroke-width="1.5" opacity=".7"/><path d="M32 12l2.2 6.8L41 21l-6.8 2.2L32 30l-2.2-6.8L23 21l6.8-2.2z" fill="#fff"/><path d="M32 30 L20 54h6.5l2.4-5.2h6.2l2.4 5.2H44z M31 44l1-2.6 1 2.6z" fill="#16b5aa"/></svg>
+      Ai<b>Task</b>
+    </a>
+    <span class="pill teal dot">Live demo · sample data</span>
+    <span class="pill hide-m">Maple Home Services (fictional)</span>
+    <div class="sp">
+      <a class="btn ghost sm hide-m" href="./">← Back to site</a>
+      <a class="btn wa sm" href="https://wa.me/16474508704?text=Hi%20AiTask%2C%20I%20saw%20the%20demo%20and%20want%20this%20for%20my%20business." target="_blank" rel="noopener">Want this? WhatsApp us</a>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="side" id="side"></nav>
+  <main class="main" id="main"></main>
+  <aside class="wa">
+    <div class="phone">
+      <div class="ph-top">
+        <div class="av"><svg width="20" height="20" viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="16" fill="#0f1b2d"/><path d="M32 30 L20 54h6.5l2.4-5.2h6.2l2.4 5.2H44z" fill="#16b5aa"/><path d="M32 12l2.2 6.8L41 21l-6.8 2.2L32 30l-2.2-6.8L23 21l6.8-2.2z" fill="#fff"/></svg></div>
+        <div><b>Office · Maple Home Services</b><small>your AiTask agent · the group where Dana runs the business</small></div>
+      </div>
+      <div class="chat" id="chat"></div>
+      <div class="wa-ctl">
+        <button class="btn primary sm" id="playBtn" onclick="replay()">▶ Replay the day</button>
+        <button class="btn ghost sm" onclick="skipAll()">Skip to end</button>
+        <span class="st" id="st"></span>
+      </div>
+    </div>
+    <p class="muted small" style="margin:.7rem .2rem 0">Everything on the left updates as the conversation plays: documents change status, the calendar fills, money and receipts land on the job.</p>
+  </aside>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeDoc()">
+  <div class="mbox">
+    <div class="mbar"><b id="mtitle">Document</b><span class="pill" id="mstatus"></span><div class="sp"><span class="pill blue">Client view</span><button class="btn ghost sm" onclick="closeDoc()">Close ✕</button></div></div>
+    <div class="doc" id="mdoc"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ SAMPLE DATA (all fictional) ============ */
+const TODAY='2026-10-13'; // Tue
+const BIZ={name:'Maple Home Services',owner:'Dana',tag:'Painting & light renovation · Toronto',hst:0.13,email:'office@maplehome.example',phone:'(416) 555-0142'};
+const CL=[
+ {id:'C-101',name:'Sarah Mitchell',phone:'(416) 555-0183',email:'sarah.m@example.com',addr:'12 Elm St, Toronto',since:'2026-10-13',src:'Website form'},
+ {id:'C-102',name:'Omar Haddad',phone:'(647) 555-0127',email:'omar.h@example.com',addr:'88 Queen St E, Toronto',since:'2026-10-05',src:'Google'},
+ {id:'C-103',name:'Priya Nair',phone:'(905) 555-0168',email:'priya.n@example.com',addr:'48 Birch Ave, Markham',since:'2026-10-08',src:'Referral'},
+ {id:'C-104',name:'Lakeside Dental',phone:'(416) 555-0199',email:'admin@lakesidedental.example',addr:'300 Lakeshore Blvd W, Toronto',since:'2026-09-14',src:'LinkedIn'},
+ {id:'C-105',name:'Jordan Lee',phone:'(416) 555-0110',email:'jordan.lee@example.com',addr:'7 Maple Rd, Etobicoke',since:'2026-08-20',src:'Instagram'},
+ {id:'C-106',name:'Green Leaf Café',phone:'(647) 555-0144',email:'hello@greenleaf.example',addr:'1201 Dundas St W, Toronto',since:'2026-10-11',src:'Walk-in'},
+ {id:'C-107',name:'Rachel Kim · Harbour Lofts',phone:'—',email:'rachel.kim@harbourlofts.example',addr:'25 Harbour Sq, Toronto',since:'2026-10-13',src:'LinkedIn',at:12}
+];
+const PR=[
+ {id:'P-1',c:'C-101',name:'Kitchen repaint — walls & ceiling',start:'2026-10-14',end:'2026-10-16',time:'8:00',at:5,confirm:6,crew:['Marco','Ana']},
+ {id:'P-2',c:'C-102',name:'Bathroom renovation — paint & tile',start:null,end:null},
+ {id:'P-3',c:'C-103',name:'Exterior repaint — siding & trim',visit:'2026-10-14',vtime:'10:00'},
+ {id:'P-4',c:'C-104',name:'Office repaint — 6 rooms + reception',start:'2026-10-20',end:'2026-10-22',time:'7:30',crew:['Marco','Ana','Tom']},
+ {id:'P-5',c:'C-105',name:'Basement finishing — paint & trim',start:'2026-09-28',end:'2026-10-02',done:true},
+ {id:'P-6',c:'C-106',name:'Café interior — feature wall',visit:'2026-10-16',vtime:'15:00'},
+ {id:'P-7',c:'C-107',name:'12 units — turnover painting',visit:'2026-10-15',vtime:'10:00',at:12}
+];
+const ITEMS_S=[['Kitchen 14×12 — walls, 2 coats premium eggshell',1,'room',1240],['Ceiling — 2 coats flat white',1,'room',420],['Prep: patch, sand, caulk, mask',1,'job',180]];
+const DOCS=[
+ {id:'Q-1041',type:'quote',c:'C-101',p:'P-1',date:'2026-10-13',items:ITEMS_S,at:3,status:s=>s>=5?'Signed':s>=4?'Opened':'Sent',signed:5,opened:4},
+ {id:'I-1042',type:'invoice',c:'C-101',p:'P-1',date:'2026-10-13',items:[['50% deposit — Kitchen repaint (ref. Q-1041)',1,'',1039.60/1.13]],at:5,status:s=>s>=8?'Paid':'Sent',paid:8,method:'e-Transfer',label:'Deposit invoice'},
+ {id:'WO-1043',type:'workorder',c:'C-101',p:'P-1',date:'2026-10-13',items:ITEMS_S,at:7,status:()=>'Sent to crew',to:'Marco (lead), Ana'},
+ {id:'R-1044',type:'receipt',c:'C-101',p:'P-1',date:'2026-10-13',items:[['Payment received — deposit, Kitchen repaint',1,'',1039.60/1.13]],at:8,status:()=>'Issued'},
+ {id:'Q-1039',type:'quote',c:'C-102',p:'P-2',date:'2026-10-06',items:[['Bathroom — walls & ceiling, moisture-resistant paint',1,'room',690],['Tile regrout + silicone',1,'job',340],['Vanity area prep & paint',1,'job',210]],status:()=>'Opened',opened:0,follow:9},
+ {id:'I-1038',type:'invoice',c:'C-104',p:'P-4',date:'2026-10-04',items:[['50% deposit — Office repaint, 6 rooms + reception (ref. Q-1037)',1,'',4000]],status:()=>'Unpaid',overdue:9,label:'Deposit invoice'},
+ {id:'Q-1037',type:'quote',c:'C-104',p:'P-4',date:'2026-09-30',items:[['6 offices — walls, 2 coats, low-VOC',6,'room',780],['Reception + corridor — walls & ceiling',1,'area',1460],['After-hours work (evenings)',1,'job',600]],status:()=>'Signed',signed:0},
+ {id:'Q-1020',type:'quote',c:'C-105',p:'P-5',date:'2026-09-15',items:[['Basement — walls & ceiling, 2 coats, drywall touch-ups',1,'area',3900],['Trim, doors & baseboards — semi-gloss',1,'job',1650],['Prep, masking, clean-up',1,'job',650]],status:()=>'Signed',signed:0},
+ {id:'I-1021',type:'invoice',c:'C-105',p:'P-5',date:'2026-09-18',items:[['50% deposit — Basement finishing (ref. Q-1020)',1,'',3100]],status:()=>'Paid',label:'Deposit invoice',method:'e-Transfer'},
+ {id:'R-1030',type:'receipt',c:'C-105',p:'P-5',date:'2026-10-03',items:[['Final payment — Basement finishing',1,'',3100]],status:()=>'Issued'},
+ {id:'I-1029',type:'invoice',c:'C-105',p:'P-5',date:'2026-10-02',items:[['Balance — Basement finishing (contract $6,200, deposit $3,100 received)',1,'',3100]],status:()=>'Paid',label:'Balance invoice',method:'Card'},
+ {id:'Q-1036',type:'quote',c:'C-106',p:'P-6',date:'2026-10-12',items:[['Feature wall — colour-blocked design, 3 colours',1,'wall',560],['Ceiling touch-ups',1,'job',140]],status:()=>'Draft'}
+];
+const TEAM=[{n:'Marco Ruiz',role:'Lead painter',rate:28,today:'12 Elm St · on the clock since 7:58',at:6},{n:'Ana Costa',role:'Painter',rate:25,today:'12 Elm St · on the clock since 8:04',at:6},{n:'Tom Baker',role:'Helper (part-time)',rate:20,today:'Off today'}];
+const FIN={ // per project: labour entries, receipts, income derive from docs
+ 'P-1':{hours:[{w:'Marco',h:8,r:28,at:15},{w:'Ana',h:7.5,r:25,at:15}],rec:[{l:'Home Depot — paint & supplies (Marco, photo)',a:186.40,at:13}]},
+ 'P-4':{hours:[],rec:[{l:'Benjamin Moore — 18 gal low-VOC',a:1162.00}]},
+ 'P-5':{hours:[{w:'Marco',h:38,r:28},{w:'Ana',h:36,r:25},{w:'Tom',h:16,r:20}],rec:[{l:'Paint & trim stock',a:940.25},{l:'Parking',a:62.00}]}
+};
+const FIXED=[['Vehicle lease',640],['Insurance',385],['Phone & software',190],['Storage unit',210]];
+const SEG=[['Quoted, never closed',['Omar Haddad','Green Leaf Café'],'A proposal was sent and nothing was signed'],['Signed, not scheduled',[],'Committed jobs with no dates yet'],['Past customers (90+ days)',['Jordan Lee'],'Finished jobs — ask for a review or a referral'],['Finished, no review yet',['Jordan Lee'],'Send a Google review request']];
+const OPTS=[['📄','Quotes & e-sign','Branded proposals, tracked opens, Review & Sign link',true,'Core'],['🧾','Invoices, receipts & card payments','Deposit / balance invoices, e-Transfer + card, receipts',true,'Core'],['💬','Lead replies in a minute','Website, Google, LinkedIn and WhatsApp leads answered day or night',true,'Core'],['📅','Scheduling & Google Calendar','Jobs, site visits, client reminders, booking page',true,'Core'],['👷','Crew app','Clock in/out, tasks, brief, what to bring, photos & receipts',true,'Add-on'],['📊','Accounting & profit per job','Labour + materials vs income, fixed expenses, monthly P&L',true,'Add-on'],['📣','Marketing & reviews','Segments of your own clients, review requests, one copy to you first',true,'Add-on'],['🤝','Subcontractor agreements','Signed agreements for trades, work orders without prices',false,'Add-on'],['🔗','LinkedIn agent','Replies to LinkedIn messages in your voice, hands leads to the office',true,'Add-on'],['🌐','Website → leads','A site whose form lands straight in the office',false,'Custom'],['📘','QuickBooks export','Receipts and invoices mirrored to your books',false,'Custom']];
+
+/* ============ THE DAY — WhatsApp story (step index = when things change) ============ */
+const STORY=[
+ {t:'7:30',k:'in',m:'☀️ <b>Morning brief, Tue Oct 13</b>\nToday: no crew booked (Sarah’s job starts tomorrow if she signs).\nOpen: Omar Haddad quote Q-1039 — 7 days, opened twice. Lakeside Dental deposit I-1038 — $4,520, 9 days overdue.\nTomorrow 10:00: site visit, Priya Nair, 48 Birch Ave.'},
+ {t:'9:12',k:'out',img:'Kitchen · 12 Elm St',m:'Sarah Mitchell, 12 Elm St. Kitchen walls + ceiling, 2 coats, premium eggshell. Quote please.'},
+ {t:'9:14',k:'in',m:'<b>Quote Q-1041 · 12 Elm St</b>\nKitchen 14×12 walls, ceiling, prep — your price list.\nSubtotal $1,840.00 · HST $239.20 · <b>Total $2,079.20</b>\nSent to Sarah as a branded PDF with a Review &amp; Sign link. I’ll chase Thursday if there’s no answer.',doc:'Q-1041',toast:'Quote Q-1041 sent to Sarah Mitchell'},
+ {t:'11:02',k:'in',m:'👀 Sarah opened the quote (just now, on her phone).',toast:'Q-1041 opened by the client'},
+ {t:'11:06',k:'in',m:'✍️ <b>Sarah signed Q-1041.</b>\nDeposit invoice I-1042 — $1,039.60 — sent with e-Transfer and card options.\nI pencilled <b>Wed Oct 14 – Fri Oct 16</b> on the calendar. Say “confirm” and I’ll send the crew the work order.',doc:'I-1042',toast:'Signed · deposit invoice sent · dates pencilled'},
+ {t:'11:07',k:'out',m:'confirm'},
+ {t:'11:07',k:'in',m:'Done. Job confirmed Oct 14–16, 8:00 start. Work order WO-1043 sent to Marco and Ana — scope, address, what to bring, <b>no prices</b>. Google Calendar updated.',doc:'WO-1043',toast:'Job confirmed · work order to crew · calendar synced'},
+ {t:'13:40',k:'in',m:'💰 <b>e-Transfer received: $1,039.60 from Sarah Mitchell.</b>\nMatched to I-1042 → marked Paid. Receipt R-1044 sent to Sarah. Income recorded on the job.',doc:'R-1044',toast:'Payment matched · receipt issued'},
+ {t:'14:00',k:'in',m:'🔔 <b>Reminder sent.</b> Omar Haddad’s quote Q-1039 is 7 days unsigned (opened twice). Polite follow-up emailed with the two visit slots you keep on Thursdays. Next nudge in 5 days unless you stop it.',toast:'Follow-up sent to Omar Haddad'},
+ {t:'14:25',k:'in',li:true,m:'🔗 <b>LinkedIn — new message</b>\n<b>Rachel Kim</b>, Property Manager at Harbour Lofts:\n“Hi Dana, we have 12 units turning over in November — do you handle multi-unit painting?”\n\nSuggested reply (your voice): “Hi Rachel — yes, turnover painting is a big part of what we do. I can walk the units this week and have pricing to you within a day. Thursday 10:00 or Friday 14:00?”\n\nSay <b>send</b>, or tell me what to change.'},
+ {t:'14:26',k:'out',m:'send'},
+ {t:'14:26',k:'in',m:'Replied on LinkedIn. Rachel is now a lead (C-107 · Harbour Lofts, 12 units) with a site visit held for <b>Thu Oct 15, 10:00</b>. I’ll confirm it the moment she picks a slot.',toast:'LinkedIn lead added · visit held'},
+ {t:'15:10',k:'in',img:'Receipt · Home Depot · $186.40',m:'🧾 <b>Receipt from Marco</b> (photo in the crew app): Home Depot, $186.40, paint &amp; supplies.\nFiled to <b>12 Elm St</b> → materials. Job profit updated. Copy saved for the bookkeeper.',toast:'Receipt filed to the job'},
+ {t:'16:00',k:'in',m:'🗓 <b>Reminder for tomorrow:</b> 10:00 site visit — Priya Nair, 48 Birch Ave, Markham (exterior). Priya got a confirmation by email and text. Directions pinned in your calendar.'},
+ {t:'17:30',k:'in',m:'🌙 <b>End of day</b>\n12 Elm St: Marco 8h, Ana 7.5h logged from the crew app → labour $411.50. Materials $186.40. Deposit in: $1,039.60.\n<b>Money in today:</b> $1,039.60 · <b>Unpaid:</b> Lakeside Dental I-1038, $4,520 (9 days).\nChase Lakeside tomorrow morning?'},
+ {t:'17:31',k:'out',m:'yes'},
+ {t:'17:31',k:'in',m:'Scheduled for 9:00 — a short, friendly reminder with the card link. I’ll tell you when it’s paid. Good night, Dana.'}
+];
+/* ============ STATE ============ */
+let step=STORY.length, tab='dash', view=null, timer=null;
+const $=s=>document.querySelector(s);
+const money=n=>'$'+n.toLocaleString('en-CA',{minimumFractionDigits:2,maximumFractionDigits:2});
+const cl=id=>CL.find(c=>c.id===id), pr=id=>PR.find(p=>p.id===id);
+const vis=o=>!o.at||step>=o.at;
+const docs=()=>DOCS.filter(vis), clients=()=>CL.filter(vis), projects=()=>PR.filter(vis);
+const sub=d=>d.items.reduce((a,i)=>a+i[1]*i[3],0);
+const tot=d=>sub(d)*(1+BIZ.hst);
+const st=d=>d.status(step);
+const initials=n=>n.replace(/\(.*?\)|·.*$/g,'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+const pillFor=s=>({Draft:'',Sent:'blue',Opened:'warn',Signed:'ok',Paid:'ok',Issued:'ok',Unpaid:'bad','Sent to crew':'teal'}[s]||'');
+const TYPE={quote:'Proposal',invoice:'Invoice',receipt:'Receipt',workorder:'Work order'};
+const fmtD=s=>{const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-CA',{month:'short',day:'numeric'})};
+function income(pid){return docs().filter(d=>d.p===pid&&d.type==='invoice'&&st(d)==='Paid').reduce((a,d)=>a+tot(d),0)}
+function contract(pid){const q=docs().filter(d=>d.p===pid&&d.type==='quote'&&st(d)==='Signed')[0];return q?tot(q):0}
+function cost(pid){const f=FIN[pid]||{hours:[],rec:[]};const l=f.hours.filter(vis).reduce((a,h)=>a+h.h*h.r,0),m=f.rec.filter(vis).reduce((a,r)=>a+r.a,0);return{l,m,c:l+m}}
+
+/* ============ NAV ============ */
+const TABS=[['dash','🏠','Dashboard'],['cal','📅','Calendar'],['clients','👥','Clients'],['projects','🏗️','Projects'],['docs','📄','Documents'],['team','👷','Team'],['acct','📊','Accounting'],['mkt','📣','Marketing'],['opts','🧩','Options']];
+function badge(t){if(t==='dash'){return docs().filter(d=>['Unpaid'].includes(st(d))).length+docs().filter(d=>st(d)==='Opened').length}return 0}
+function renderSide(){
+  $('#side').innerHTML=`<div class="biz"><b>${BIZ.name}</b><small>${BIZ.tag}</small></div>`+TABS.map(([k,i,l])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')"><span>${i}</span>${l}${badge(k)?`<span class="n">${badge(k)}</span>`:''}</button>`).join('');
+}
+function go(t){tab=t;view=null;render();window.scrollTo({top:0,behavior:'smooth'})}
+function render(){renderSide();const m=$('#main');m.innerHTML=({dash,cal,clients:clientsTab,projects:projectsTab,docs:docsTab,team,acct,mkt,opts})[tab]();m.classList.remove('flash');void m.offsetWidth;m.classList.add('flash')}
+
+/* ============ TABS ============ */
+function dash(){
+  const open=docs().filter(d=>d.type==='quote'&&['Sent','Opened'].includes(st(d))), unpaid=docs().filter(d=>d.type==='invoice'&&['Sent','Unpaid'].includes(st(d)));
+  const today=projects().filter(p=>p.start&&p.start<=TODAY&&p.end>=TODAY), week=projects().filter(p=>p.start&&p.start<='2026-10-18'&&p.end>=TODAY);
+  const mIn=docs().filter(d=>d.type==='invoice'&&st(d)==='Paid'&&d.date===TODAY).reduce((a,d)=>a+tot(d),0);
+  const toSched=projects().filter(p=>!p.start&&docs().some(d=>d.p===p.id&&d.type==='quote'&&st(d)==='Signed'));
+  const visits=projects().filter(p=>p.visit&&p.visit>=TODAY).sort((a,b)=>a.visit>b.visit?1:-1);
+  return `<div class="panel"><div class="ph"><div><h2>Good afternoon, ${BIZ.owner}</h2><div class="muted small">Tuesday, Oct 13 · what needs you today</div></div><div class="sp"><span class="pill teal dot">Agent online</span><span class="pill">Last sync 17:31</span></div></div>
+  <div class="kpis"><div class="kpi w"><b>${money(open.reduce((a,d)=>a+tot(d),0))}</b><span>Open quotes (${open.length})</span></div><div class="kpi b"><b>${money(unpaid.reduce((a,d)=>a+tot(d),0))}</b><span>Unpaid invoices (${unpaid.length})</span></div><div class="kpi t"><b>${money(mIn)}</b><span>Money in today</span></div><div class="kpi"><b>${week.length}</b><span>Jobs this week</span></div></div>
+  <div class="two">
+   <div><h3>🔨 Running / starting</h3><div class="list">${week.length?week.map(p=>row('🏗️',cl(p.c).name,`${p.name} · ${fmtD(p.start)}–${fmtD(p.end)} · crew: ${(p.crew||[]).join(', ')}`,p.start<=TODAY?'<span class="pill ok dot">On site</span>':(p.confirm&&step<p.confirm?'<span class="pill warn dot">Pencilled</span>':'<span class="pill blue dot">Starts '+fmtD(p.start)+'</span>'),`openProject('${p.id}')`)).join(''):'<div class="empty">Nothing booked this week yet.</div>'}</div>
+   <h3 style="margin-top:1rem">📅 Site visits</h3><div class="list">${visits.map(p=>row('📍',cl(p.c).name,`${p.name} · ${fmtD(p.visit)} ${p.vtime}`,p.at?'<span class="pill blue">LinkedIn lead</span>':'',`openProject('${p.id}')`)).join('')}</div></div>
+   <div><h3>✍️ Proposals waiting for the client</h3><div class="list">${open.length?open.map(d=>row('📄',cl(d.c).name,`${d.id} · ${fmtD(d.date)} · ${st(d)==='Opened'?'opened':'not opened yet'}${d.follow&&step>=d.follow?' · follow-up sent today':''}`,`<span class="amt">${money(tot(d))}</span><span class="pill ${pillFor(st(d))}">${st(d)}</span>`,`openDoc('${d.id}')`)).join(''):'<div class="empty">No open proposals.</div>'}</div>
+   <h3 style="margin-top:1rem">💰 Invoices sent, unpaid</h3><div class="list">${unpaid.length?unpaid.map(d=>row('🧾',cl(d.c).name,`${d.id} · ${d.label||'Invoice'} · ${d.overdue?d.overdue+' days overdue':'sent today'}`,`<span class="amt">${money(tot(d))}</span><span class="pill ${d.overdue?'bad':'blue'}">${d.overdue?'Overdue':'Sent'}</span>`,`openDoc('${d.id}')`)).join(''):'<div class="empty">Everything is paid.</div>'}</div>
+   ${toSched.length?`<h3 style="margin-top:1rem">🗓 Signed, not scheduled</h3><div class="list">${toSched.map(p=>row('⏳',cl(p.c).name,p.name,'<span class="pill warn">Pick dates</span>',`openProject('${p.id}')`)).join('')}</div>`:''}
+  </div></div>
+  <div class="panel"><h3>🕒 What the agent did today</h3><div class="tl">${STORY.slice(0,step).filter(s=>s.k==='in'&&s.toast).map(s=>`<div>${s.toast}<small>${s.t}</small></div>`).join('')||'<div class="empty">Press ▶ Replay the day to watch the office fill up.</div>'}</div></div>`;
+}
+function row(ic,t,s,r,on){return `<div class="row" onclick="${on}"><span style="font-size:1.1rem">${ic}</span><div><div class="ttl">${t}</div><div class="sub">${s}</div></div><div class="r">${r||''}</div></div>`}
+
+function cal(){
+  const first=new Date('2026-10-01T00:00:00'),off=first.getDay();let cells='';
+  const evs=[];projects().forEach(p=>{if(p.start)evs.push({p,from:p.start,to:p.end,cls:'job'+(p.confirm&&step<p.confirm?' pencil':'')+(p.c==='C-104'?' lk':''),l:cl(p.c).name.split(' ')[0]+' · '+p.name.split(' —')[0]});if(p.visit)evs.push({p,from:p.visit,to:p.visit,cls:'visit',l:p.vtime+' '+cl(p.c).name.split(' ·')[0]+' (visit)'})});
+  for(let i=0;i<off;i++)cells+='<div class="d o"></div>';
+  for(let d=1;d<=31;d++){const ds='2026-10-'+String(d).padStart(2,'0');cells+=`<div class="d ${ds===TODAY?'today':''}"><span class="n">${d}</span>${evs.filter(e=>e.from<=ds&&e.to>=ds).map(e=>`<div class="ev ${e.cls}" onclick="openProject('${e.p.id}')" title="${e.l}">${e.l}</div>`).join('')}</div>`}
+  return `<div class="panel"><div class="ph"><div><h2>Calendar · October 2026</h2><div class="muted small">Jobs and site visits · mirrored to Google Calendar · the crew sees only their own days</div></div><div class="sp"><span class="pill teal">■ Job</span><span class="pill warn">▭ Pencilled</span><span class="pill" style="color:#6d3fc5;background:#efe8fb;border-color:#e2d6f7">■ Site visit</span></div></div>
+  <div class="cal">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="dh">${d}</div>`).join('')}${cells}</div>
+  <p class="muted small" style="margin:.8rem 0 0">Clients get a reminder the day before a visit. Say “move Lakeside to the 27th” in WhatsApp and the calendar, the crew and the client all update.</p></div>`;
+}
+
+function clientsTab(){
+  if(view)return clientView(view);
+  return `<div class="panel"><div class="ph"><div><h2>Clients</h2><div class="muted small">${clients().length} clients · every one with a code, a timeline and their documents</div></div><div class="sp"><input placeholder="Search name, phone, address…" style="border:1px solid var(--line);border-radius:9px;padding:.45rem .7rem;font:inherit;font-size:.88rem" oninput="filterC(this.value)"></div></div>
+  <div class="list" id="clist">${clients().map(clientRow).join('')}</div></div>`;
+}
+function clientRow(c){const n=docs().filter(d=>d.c===c.id).length;return `<div class="row" data-s="${(c.name+c.phone+c.addr).toLowerCase()}" onclick="openClient('${c.id}')"><div class="av ${c.src==='LinkedIn'?'':'t'}">${initials(c.name)}</div><div><div class="ttl">${c.name} <span class="pill" style="margin-left:.3rem">${c.id}</span></div><div class="sub">📞 ${c.phone} · ✉️ ${c.email} · 📍 ${c.addr}</div></div><div class="r"><span class="pill ${c.src==='LinkedIn'?'blue':''}">${c.src}</span><span class="muted small">${n} doc${n!==1?'s':''}</span></div></div>`}
+function filterC(v){v=v.toLowerCase();document.querySelectorAll('#clist .row').forEach(r=>r.style.display=r.dataset.s.includes(v)?'':'none')}
+function openClient(id){tab='clients';view=id;render()}
+function clientView(id){const c=cl(id),ps=projects().filter(p=>p.c===id),ds=docs().filter(d=>d.c===id);
+  const tl=[];ds.forEach(d=>{tl.push([d.date,`${TYPE[d.type]} ${d.id} created`]);if(d.opened!==undefined&&step>=d.opened)tl.push([d.date,`${d.id} opened by the client`]);if(d.signed!==undefined&&step>=d.signed)tl.push([d.date,`${d.id} signed ✍️`]);if(d.paid&&step>=d.paid)tl.push([d.date,`${d.id} paid by ${d.method}`]);if(d.follow&&step>=d.follow)tl.push([TODAY,`Follow-up email sent for ${d.id}`])});
+  tl.push([c.since,`Client added (${c.src})`]);
+  return `<div class="panel"><button class="back" onclick="go('clients')">← All clients</button>
+  <div class="ph" style="margin-top:.6rem"><div class="av" style="width:48px;height:48px;font-size:1rem">${initials(c.name)}</div><div><h2 style="margin:0">${c.name} <span class="pill">${c.id}</span></h2><div class="muted small">📞 ${c.phone} · ✉️ ${c.email} · 📍 ${c.addr}</div></div><div class="sp"><span class="btn ghost sm" onclick="toast('In the real office this opens the proposal builder')">+ New proposal</span><span class="btn ghost sm" onclick="toast('Sends a tracked email to the client, BCC you')">✉ Email</span></div></div>
+  <div class="two"><div><h3>Projects</h3><div class="list">${ps.map(p=>row('🏗️',p.name,p.start?`${fmtD(p.start)}–${fmtD(p.end)}`:p.visit?`Site visit ${fmtD(p.visit)} ${p.vtime}`:'Not scheduled',p.done?'<span class="pill ok">Completed</span>':'',`openProject('${p.id}')`)).join('')||'<div class="empty">No project yet.</div>'}</div>
+  <h3 style="margin-top:1rem">Documents</h3><div class="list">${ds.map(docRow).join('')||'<div class="empty">No documents yet.</div>'}</div></div>
+  <div><h3>Communication timeline</h3><div class="tl">${tl.sort((a,b)=>a[0]<b[0]?1:-1).map(e=>`<div>${e[1]}<small>${fmtD(e[0])}</small></div>`).join('')}</div>
+  <h3 style="margin-top:1rem">Notes</h3><p class="muted small">${c.id==='C-101'?'Has a dog (friendly). Prefers mornings. Colour: BM Chantilly Lace.':c.id==='C-104'?'Work after 18:00 only. Invoice to admin@. PO number required.':c.id==='C-107'?'From LinkedIn · 12 units turning over in November · wants pricing within a day of the walk-through.':'—'}</p></div></div></div>`;
+}
+
+function projectsTab(){
+  if(view)return projectView(view);
+  return `<div class="panel"><div class="ph"><div><h2>Projects</h2><div class="muted small">One project per job · everything about it in one place</div></div></div>
+  <div class="list">${projects().map(p=>{const ct=contract(p.id),inc=income(p.id),c=cost(p.id);return row('🏗️',`${cl(p.c).name} — ${p.name}`,p.done?'Completed':p.start?`${fmtD(p.start)}–${fmtD(p.end)} · crew ${(p.crew||[]).join(', ')}`:p.visit?`Site visit ${fmtD(p.visit)} ${p.vtime}`:'Quoted, not scheduled',`${ct?`<span class="amt">${money(ct)}</span>`:''}${inc?`<span class="pill ok">paid ${money(inc)}</span>`:''}${p.done?'<span class="pill ok">✅ Done</span>':''}`,`openProject('${p.id}')`)}).join('')}</div></div>`;
+}
+function openProject(id){tab='projects';view=id;render()}
+function projectView(id){const p=pr(id),c=cl(p.c),ds=docs().filter(d=>d.p===id),ct=contract(id),inc=income(id),co=cost(id),f=FIN[id]||{hours:[],rec:[]};const prof=inc-co.c;
+  return `<div class="panel"><button class="back" onclick="go('projects')">← All projects</button>
+  <div class="ph" style="margin-top:.6rem"><div><h2 style="margin:0">${p.name}</h2><div class="muted small"><a href="#" onclick="openClient('${c.id}');return false">${c.name}</a> · 📍 ${c.addr}</div></div><div class="sp">${p.done?'<span class="pill ok">✅ Completed</span>':p.start?`<span class="pill teal">📅 ${fmtD(p.start)}–${fmtD(p.end)} · ${p.time}</span>`:'<span class="pill warn">Not scheduled</span>'}</div></div>
+  <div class="kpis"><div class="kpi"><b>${ct?money(ct):'—'}</b><span>Contract (signed)</span></div><div class="kpi t"><b>${money(inc)}</b><span>Paid to date</span></div><div class="kpi"><b>${money(co.c)}</b><span>Cost so far</span></div><div class="kpi ${prof>=0?'t':'b'}"><b>${ct||inc?money(prof):'—'}</b><span>Profit so far</span></div></div>
+  ${ct?`<div class="prog" title="paid of contract"><i style="width:${Math.min(100,inc/ct*100)}%"></i></div><div class="muted small" style="margin:.3rem 0 1rem">${Math.round(inc/ct*100)}% of the contract collected · balance ${money(ct-inc)}</div>`:''}
+  <div class="two"><div><h3>Documents</h3><div class="list">${ds.map(docRow).join('')||'<div class="empty">No documents yet — the agent creates the proposal from your photo or message.</div>'}</div>
+  <h3 style="margin-top:1rem">Crew</h3><div class="chips">${(p.crew||[]).map(n=>`<span class="pill teal">👷 ${n}</span>`).join('')||'<span class="muted small">Not assigned</span>'}</div>
+  ${p.c==='C-101'?`<h3 style="margin-top:1rem">Crew brief</h3><p class="muted small">Start 8:00, park on Elm (no permit needed). Dog is friendly. Mask the island and the floors. Bring: 18" roller sleeves, Chantilly Lace eggshell ×3, flat white ×2, drop sheets, caulk.</p>`:''}</div>
+  <div><h3>Financials (live)</h3><table><tr><th>Item</th><th class="num">Amount</th></tr>
+  ${f.hours.filter(vis).map(h=>`<tr><td>⏱ ${h.w} — ${h.h} h × $${h.r}</td><td class="num">${money(h.h*h.r)}</td></tr>`).join('')}
+  ${f.rec.filter(vis).map(r=>`<tr><td>🧾 ${r.l}</td><td class="num">${money(r.a)}</td></tr>`).join('')}
+  <tr><td><b>Labour</b></td><td class="num"><b>${money(co.l)}</b></td></tr><tr><td><b>Materials & other</b></td><td class="num"><b>${money(co.m)}</b></td></tr>
+  <tr><td><b>Income (paid invoices)</b></td><td class="num"><b>${money(inc)}</b></td></tr></table>
+  <p class="muted small" style="margin:.6rem 0 0">Hours arrive from the crew app. Receipts arrive as photos in WhatsApp or the crew app and are filed here automatically.</p></div></div></div>`;
+}
+function docRow(d){return row({quote:'📄',invoice:'🧾',receipt:'✅',workorder:'🛠️'}[d.type],`${TYPE[d.type]} ${d.id}${d.label?' · '+d.label:''}`,`${fmtD(d.date)}${d.to?' · to '+d.to:''}`,`${d.type!=='workorder'?`<span class="amt">${money(tot(d))}</span>`:''}<span class="pill ${pillFor(st(d))}">${st(d)}</span>`,`openDoc('${d.id}')`)}
+
+function docsTab(){
+  const flow=['Draft','Sent','Opened','Signed','Invoiced','Paid','Receipt'];
+  return `<div class="panel"><div class="ph"><div><h2>Documents</h2><div class="muted small">Every proposal, invoice, receipt and work order — with its status tracked automatically</div></div></div>
+  <div class="chips" style="margin-bottom:1rem">${flow.map((f,i)=>`<span class="pill ${i<4?'blue':'ok'}">${i+1}. ${f}</span>`).join('<span class="muted">→</span>')}</div>
+  <table><tr><th>No.</th><th>Type</th><th>Client</th><th>Project</th><th>Date</th><th class="num">Total</th><th>Status</th></tr>
+  ${docs().sort((a,b)=>a.date<b.date?1:-1).map(d=>`<tr class="clk" onclick="openDoc('${d.id}')"><td><b>${d.id}</b></td><td>${TYPE[d.type]}${d.label?'<br><small class="muted">'+d.label+'</small>':''}</td><td>${cl(d.c).name}</td><td class="muted">${pr(d.p).name.split(' —')[0]}</td><td>${fmtD(d.date)}</td><td class="num">${d.type==='workorder'?'<span class="muted">no prices</span>':money(tot(d))}</td><td><span class="pill ${pillFor(st(d))}">${st(d)}</span></td></tr>`).join('')}
+  </table><p class="muted small" style="margin:.8rem 0 0">Click any document to see it exactly as the client does. A proposal is sent with a Review &amp; Sign link; a signed proposal becomes the contract; a receipt is issued on payment.</p></div>`;
+}
+
+function team(){
+  return `<div class="panel"><div class="ph"><div><h2>Team</h2><div class="muted small">Who’s on the clock · hours flow straight to the job’s cost</div></div><div class="sp"><span class="pill teal dot">${TEAM.filter(t=>vis(t)&&t.at).length} on site now</span></div></div>
+  <div class="list">${TEAM.map(t=>row('👷',t.n,`${t.role} · $${t.rate}/h`,`<span class="pill ${t.at&&vis(t)?'ok dot':''}">${t.at&&vis(t)?t.today:'Off today'}</span>`,'toast(\'Opens the worker: hours by week, rate, sign-in for the crew app\')')).join('')}</div>
+  <div class="two" style="margin-top:1.2rem"><div class="card"><h3>📱 Crew app (phone)</h3><p class="muted small">Each worker signs in with their phone. Start work → pick the job → task list → finish work. Photos and receipts from the job. Managers see everyone’s hours; a painter sees only their own.</p><div class="chips"><span class="pill">Clock in/out</span><span class="pill">Tasks</span><span class="pill">Job brief</span><span class="pill">What to bring</span><span class="pill">Photos</span><span class="pill">Receipts</span></div></div>
+  <div class="card"><h3>🛠️ Work orders</h3><p class="muted small">The full scope and address, addressed to the worker — <b>never with prices</b>. Outside trades get a signed subcontractor agreement first, with confidentiality and “all client contact goes through us” built in.</p><span class="btn ghost sm" onclick="openDoc('WO-1043')">See a work order</span></div></div></div>`;
+}
+
+function acct(){
+  const rows=projects().filter(p=>FIN[p.id]||contract(p.id)).map(p=>{const inc=income(p.id),co=cost(p.id),ct=contract(p.id);return{p,inc,co,ct,prof:inc-co.c}});
+  const tI=rows.reduce((a,r)=>a+r.inc,0),tC=rows.reduce((a,r)=>a+r.co.c,0),fx=FIXED.reduce((a,f)=>a+f[1],0);
+  return `<div class="panel"><div class="ph"><div><h2>Accounting</h2><div class="muted small">Money in is matched to the job automatically · costs come from hours and receipts</div></div><div class="sp"><span class="btn ghost sm" onclick="toast('Exports a CSV / QuickBooks file for your bookkeeper')">⇩ Export</span></div></div>
+  <div class="kpis"><div class="kpi t"><b>${money(tI)}</b><span>Income (Oct, paid)</span></div><div class="kpi"><b>${money(tC)}</b><span>Job costs</span></div><div class="kpi"><b>${money(fx)}</b><span>Fixed expenses / mo</span></div><div class="kpi ${tI-tC-fx>=0?'t':'b'}"><b>${money(tI-tC-fx)}</b><span>Net this month</span></div></div>
+  <table><tr><th>Project</th><th class="num">Contract</th><th class="num">Money in</th><th class="num">Labour</th><th class="num">Materials</th><th class="num">Profit</th><th class="num">Still to collect</th></tr>
+  ${rows.map(r=>`<tr class="clk" onclick="openProject('${r.p.id}')"><td><b>${cl(r.p.c).name}</b><br><small class="muted">${r.p.name}</small></td><td class="num">${r.ct?money(r.ct):'—'}</td><td class="num">${money(r.inc)}</td><td class="num">${money(r.co.l)}</td><td class="num">${money(r.co.m)}</td><td class="num" style="color:${r.prof>=0?'var(--ok)':'var(--bad)'}"><b>${r.ct||r.inc?money(r.prof):'—'}</b></td><td class="num">${r.ct?money(Math.max(0,r.ct-r.inc)):'—'}</td></tr>`).join('')}</table>
+  <div class="two" style="margin-top:1.2rem"><div class="card"><h3>Fixed expenses</h3><table>${FIXED.map(f=>`<tr><td>${f[0]}</td><td class="num">${money(f[1])}</td></tr>`).join('')}<tr><td><b>Total / month</b></td><td class="num"><b>${money(fx)}</b></td></tr></table></div>
+  <div class="card"><h3>Bank reconciliation</h3><p class="muted small">Every e-Transfer and card payout is matched against an invoice. Anything unmatched is shown to you, never guessed onto a job.</p><div class="list"><div class="row" style="cursor:default"><span>✅</span><div><div class="ttl">$1,039.60 · Sarah Mitchell</div><div class="sub">${step>=8?'matched → I-1042 (deposit)':'expected — deposit invoice I-1042'}</div></div></div><div class="row" style="cursor:default"><span>✅</span><div><div class="ttl">$3,503.00 · Jordan Lee (card)</div><div class="sub">matched → I-1029 (balance) · 2.4% surcharge</div></div></div><div class="row" style="cursor:default"><span>⏳</span><div><div class="ttl">$4,520.00 · Lakeside Dental</div><div class="sub">waiting — reminder scheduled for tomorrow 9:00</div></div></div></div></div></div></div>`;
+}
+
+function mkt(){
+  return `<div class="panel"><div class="ph"><div><h2>Marketing</h2><div class="muted small">Lists built from your own clients · you check one copy, then it sends · nobody gets the same campaign twice</div></div></div>
+  <div class="grid g2">${SEG.map(s=>`<div class="card"><div class="ph" style="margin-bottom:.4rem"><h3 style="margin:0">${s[0]}</h3><span class="pill ${s[1].length?'blue':''}" style="margin-left:auto">${s[1].length} client${s[1].length!==1?'s':''}</span></div><p class="muted small">${s[2]}</p><div class="chips">${s[1].map(n=>`<span class="pill">${n}</span>`).join('')||'<span class="muted small">Nobody right now</span>'}</div><div style="margin-top:.8rem"><span class="btn ghost sm" onclick="toast('Sends ONE copy to you first. Nothing goes to clients until you say so.')">Send me one to check</span></div></div>`).join('')}</div>
+  <div class="card" style="margin-top:1rem"><h3>⭐ Reviews</h3><p class="muted small">When you mark a job done and it’s paid, the client gets a short thank-you with your Google review link. Jordan Lee’s goes out tonight.</p><div class="chips"><span class="pill ok">Google 4.9 (41)</span><span class="pill">Request pending: Jordan Lee</span></div></div></div>`;
+}
+
+function opts(){
+  return `<div class="panel"><div class="ph"><div><h2>Options</h2><div class="muted small">What an AiTask office can include · switch modules on and off to see what changes</div></div></div>
+  <div class="grid g2">${OPTS.map((o,i)=>`<div class="opt ${o[3]?'':'off'}" id="opt${i}"><div class="ic ${o[4]==='Core'?'':o[4]==='Add-on'?'blue':'navy'}">${o[0]}</div><div><h4>${o[1]} <span class="pill ${o[4]==='Core'?'teal':o[4]==='Add-on'?'blue':''}" style="margin-left:.3rem">${o[4]}</span></h4><p>${o[2]}</p></div><div class="sw ${o[3]?'on':''}" onclick="togOpt(${i})"></div></div>`).join('')}</div>
+  <div class="banner"><div><h3>Want this office for your business?</h3><p>Setup in a day · $450 CAD / month for the core office · add-ons quoted per module · no contract.</p></div><div class="sp"><a class="btn wa" href="https://wa.me/16474508704?text=Hi%20AiTask%2C%20I%20saw%20the%20demo%20and%20want%20this%20for%20my%20business." target="_blank" rel="noopener">WhatsApp us</a><a class="btn ghost" href="./#pricing">Pricing</a></div></div></div>`;
+}
+function togOpt(i){OPTS[i][3]=!OPTS[i][3];const e=document.getElementById('opt'+i);e.classList.toggle('off',!OPTS[i][3]);e.querySelector('.sw').classList.toggle('on',OPTS[i][3]);toast(OPTS[i][3]?`${OPTS[i][1]} switched on`:`${OPTS[i][1]} switched off`)}
+
+/* ============ DOCUMENT PREVIEW ============ */
+function openDoc(id){const d=DOCS.find(x=>x.id===id);if(!d||!vis(d))return;const c=cl(d.c),p=pr(d.p),s=st(d),isWO=d.type==='workorder';
+  $('#mtitle').textContent=`${TYPE[d.type]} ${d.id}`;const ms=$('#mstatus');ms.textContent=s;ms.className='pill '+pillFor(s);
+  const items=d.items.map(i=>`<tr><td>${i[0]}</td>${isWO?'':`<td class="num">${i[1]}${i[2]?' '+i[2]:''}</td><td class="num">${money(i[3])}</td><td class="num">${money(i[1]*i[3])}</td>`}</tr>`).join('');
+  const paySum=d.type==='invoice'?(()=>{const ct=contract(d.p)||tot(d)*2,paid=docs().filter(x=>x.p===d.p&&x.type==='invoice'&&x.id!==d.id&&st(x)==='Paid').reduce((a,x)=>a+tot(x),0);return `<div class="pay"><b>Payment summary</b><br>Contract total (incl. HST): ${money(ct)} · Paid to date: ${money(paid)} · <b>Amount due now: ${money(tot(d))}</b> · Balance after this payment: ${money(Math.max(0,ct-paid-tot(d)))}</div>`})():'';
+  $('#mdoc').innerHTML=`<div class="hd"><div class="logo"><i>M</i><div>${BIZ.name}<small>${BIZ.tag} · ${BIZ.phone} · ${BIZ.email}</small></div></div><div class="dt"><b>${isWO?'WORK ORDER':TYPE[d.type].toUpperCase()}</b><span>${d.id}</span><span>${fmtD(d.date)}, 2026</span>${s==='Paid'||d.type==='receipt'?'<span class="paid" style="margin-top:.4rem">PAID</span>':''}</div></div>
+  <div class="meta"><div><b>${isWO?'Assigned to':'Prepared for'}</b>${isWO?d.to:c.name}<br><span class="muted">${isWO?'Crew · '+BIZ.name:c.addr+'<br>'+c.email}</span></div><div><b>Project</b>${p.name}<br><span class="muted">📍 ${c.addr}${p.start?'<br>📅 '+fmtD(p.start)+'–'+fmtD(p.end)+', start '+p.time:''}</span></div></div>
+  <table><tr><th>Description</th>${isWO?'':'<th class="num">Qty</th><th class="num">Unit</th><th class="num">Amount</th>'}</tr>${items}</table>
+  ${isWO?`<div class="sec"><h4>Site protocol</h4><ul style="padding-left:1.1rem"><li>Before/progress/after photos in the crew app</li><li>Receipts photographed the same day — amount + store</li><li>Questions about scope or price go to the office, not the client</li></ul></div><div class="sec"><h4>Bring</h4><p>18" roller sleeves, Chantilly Lace eggshell ×3, flat white ×2, drop sheets, caulk, masking</p></div>`:
+  `<div class="tot"><div><span>Subtotal</span><span>${money(sub(d))}</span></div><div><span>HST 13%</span><span>${money(sub(d)*BIZ.hst)}</span></div><div class="g"><span>${d.type==='receipt'?'Amount received':'Total'}</span><span>${money(tot(d))}</span></div></div>${paySum}
+  <div class="sec"><h4>Included</h4><p>${d.type==='quote'?'All labour, premium paint, prep (patching, sanding, caulking), masking and daily clean-up. Furniture moved and covered. 2-year workmanship warranty.':'Thank you for your business.'}</p></div>
+  ${d.type==='quote'?'<div class="sec"><h4>Not included</h4><p>Structural repairs, wallpaper removal, colours beyond two per room (quoted separately).</p></div>':''}
+  <div class="sec"><h4>Terms</h4><p>${d.type==='quote'?'50% deposit on signing, balance on completion. Valid 30 days.':d.type==='invoice'?'Pay by e-Transfer to '+BIZ.email+' (no fee) or by card below (2.4% surcharge).':'This receipt confirms payment in full of the amount above.'}</p></div>
+  ${d.type==='quote'?(s==='Signed'?`<div class="sign"><div class="muted small">Reviewed and accepted by</div><div class="sig">${c.name}</div><div class="muted small">Oct 13, 2026 · 11:06 · IP logged · copy emailed to both parties</div></div>`:`<div class="sign"><div class="muted small" style="margin-bottom:.5rem">This is what the client sees at the Review &amp; Sign link</div><span class="btn primary" onclick="simSign('${d.id}')">✍️ Review &amp; Sign</span></div>`):''}
+  ${d.type==='invoice'&&s!=='Paid'?`<div class="sign"><div class="muted small" style="margin-bottom:.5rem">Client payment options</div><span class="btn primary" onclick="toast('Opens a secure card checkout. Payment is matched to this invoice automatically.')">💳 Pay by card ${money(tot(d)*1.024)}</span> <span class="btn ghost" onclick="toast('e-Transfer to the business email — matched automatically when it lands')">e-Transfer</span></div>`:''}`}`;
+  $('#modal').classList.add('on');
+}
+function closeDoc(){$('#modal').classList.remove('on')}
+function simSign(id){closeDoc();if(step<5){jump(5)}else{toast('Already signed')}}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2600)}
+
+/* ============ CHAT PLAYER ============ */
+function msgHtml(s){const d=s.doc?DOCS.find(x=>x.id===s.doc):null;return `<div class="msg ${s.k} ${s.li?'li':''}">${s.img?`<span class="img" data-l="${s.img}"></span>`:''}${s.m}${d?`<a class="doc" href="#" onclick="openDoc('${d.id}');return false"><b>📎 ${TYPE[d.type]} ${d.id}.pdf</b>${cl(d.c).name} · ${d.type==='workorder'?'no prices':money(tot(d))} · tap to open</a>`:''}<span class="t ${s.k==='out'?'ck':''}">${s.t}</span></div>`}
+function renderChat(){const c=$('#chat');c.innerHTML='<div class="msg sys">Tuesday, Oct 13</div>'+STORY.slice(0,step).map(msgHtml).join('');c.scrollTop=c.scrollHeight;$('#st').textContent=step>=STORY.length?'End of day':`${step}/${STORY.length}`}
+function replay(){clearTimeout(timer);step=0;renderChat();render();$('#playBtn').textContent='⏸ Playing…';$('#playBtn').disabled=true;tick()}
+function tick(){if(step>=STORY.length){$('#playBtn').textContent='▶ Replay the day';$('#playBtn').disabled=false;return}
+  const s=STORY[step];const c=$('#chat');const ty=document.createElement('div');ty.className='typing';ty.innerHTML=s.k==='in'?'<i></i><i></i><i></i>':'';if(s.k==='in'){c.appendChild(ty);c.scrollTop=c.scrollHeight}
+  timer=setTimeout(()=>{ty.remove();step++;renderChat();render();if(s.toast)toast(s.toast);timer=setTimeout(tick,s.k==='in'?1800:900)},s.k==='in'?1300:600)}
+function jump(n){clearTimeout(timer);step=n;renderChat();render();$('#playBtn').textContent='▶ Replay the day';$('#playBtn').disabled=false;if(n<STORY.length)timer=setTimeout(tick,1200)}
+function skipAll(){clearTimeout(timer);step=STORY.length;renderChat();render();$('#playBtn').textContent='▶ Replay the day';$('#playBtn').disabled=false}
+
+/* ============ INIT ============ */
+renderChat();render();
+if(location.hash==='#play')setTimeout(replay,600);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDoc()});
+</script>
+</body>
+</html>

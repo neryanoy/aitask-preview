@@ -1,0 +1,28 @@
+﻿# dependencies / build output - reinstallable
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+dist/
+build/
+.next/
+out/
+
+# browser profiles and caches - large and machine-specific
+*_profile/
+chrome_debug_profile/
+chrome_*/
+.playwright-mcp/
+
+# logs and scratch
+*.log
+*.out
+*.tmp
+
+# secrets - never version these
+.env
+*credentials*
+*token*.json
+*secret*
+*key.txt

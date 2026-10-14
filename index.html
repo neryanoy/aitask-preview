@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AiTask — AI agents that run your business office, from WhatsApp | Toronto</title>
+<meta name="description" content="AiTask builds AI agents for small and mid-size businesses: quotes, e-signatures, invoices, follow-ups, scheduling, crew and bookkeeping — all run from WhatsApp, with a live dashboard. Toronto & GTA.">
+<link rel="canonical" href="https://www.aitask.ca/">
+<meta property="og:title" content="AiTask — AI agents that run your business office">
+<meta property="og:description" content="Quotes, e-sign, invoices, follow-ups, scheduling and bookkeeping — handled by an AI agent in your WhatsApp, with a live dashboard. See the demo.">
+<meta property="og:image" content="https://www.aitask.ca/og.png?v=3">
+<meta property="og:url" content="https://www.aitask.ca/">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"AiTask","url":"https://www.aitask.ca","telephone":"+1-647-450-8704","email":"info@aitask.ca","areaServed":"Greater Toronto Area","address":{"@type":"PostalAddress","addressLocality":"Toronto","addressRegion":"ON","addressCountry":"CA"},"description":"AI agents that run a business's office: quotes, e-signatures, invoices, follow-ups, scheduling and bookkeeping, operated from WhatsApp with a live dashboard."}
+</script>
+<style>
+  /* mini dashboard preview used on the home page */
+  .dash-prev{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-l);overflow:hidden;font-size:.8rem}
+  .dash-prev .bar{display:flex;gap:.5rem;align-items:center;padding:.6rem .9rem;border-bottom:1px solid var(--line);background:var(--bg2)}
+  .dash-prev .bar i{width:10px;height:10px;border-radius:50%;background:#e4e8ee;display:inline-block}
+  .dash-prev .bar span{margin-left:.4rem;color:var(--faint);font-size:.75rem}
+  .dash-prev .body{display:grid;grid-template-columns:150px 1fr;min-height:300px}
+  .dash-prev .side{border-right:1px solid var(--line);padding:.7rem .5rem;background:#fff}
+  .dash-prev .side div{padding:.42rem .6rem;border-radius:7px;color:var(--muted);font-weight:550}
+  .dash-prev .side div.on{background:var(--navy);color:#fff}
+  .dash-prev .main{padding:.9rem;background:var(--bg2)}
+  .dash-prev .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.7rem}
+  .dash-prev .kpi{background:#fff;border:1px solid var(--line);border-radius:9px;padding:.55rem .7rem}
+  .dash-prev .kpi b{display:block;font-size:1.05rem;color:var(--navy)}
+  .dash-prev .kpi span{color:var(--faint);font-size:.72rem}
+  .dash-prev .row{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:.5rem .7rem;margin-bottom:.4rem}
+  .dash-prev .row small{color:var(--faint)}
+  @media(max-width:560px){.dash-prev .body{grid-template-columns:1fr}.dash-prev .side{display:none}}
+  .demo-cta{display:grid;grid-template-columns:1fr 1.15fr;gap:2.5rem;align-items:center}
+  @media(max-width:900px){.demo-cta{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="16" fill="#0f1b2d"/><rect x="6" y="6" width="52" height="52" rx="13" fill="none" stroke="#16b5aa" stroke-width="1.5" opacity=".7"/><path d="M32 12l2.2 6.8L41 21l-6.8 2.2L32 30l-2.2-6.8L23 21l6.8-2.2z" fill="#fff"/><path d="M32 30 L20 54h6.5l2.4-5.2h6.2l2.4 5.2H44z M31 44l1-2.6 1 2.6z" fill="#16b5aa"/></svg>
+      Ai<b>Task</b>
+    </a>
+    <button class="burger" aria-label="Menu" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
+    <nav class="nav">
+      <a href="#what">What it does</a>
+      <a href="#options">Options</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn teal sm" href="demo.html">See the live demo</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">AI agents for small &amp; mid-size businesses · Toronto</span>
+      <h1>An AI agent that runs your office. You just text it.</h1>
+      <p class="lead">Quotes, e-signatures, invoices, receipts, follow-ups, scheduling, crew and bookkeeping — handled by your own AiTask agent inside WhatsApp, with a live dashboard that shows you everything.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="demo.html">Open the live demo →</a>
+        <a class="btn wa" href="https://wa.me/16474508704?text=Hi%20AiTask%2C%20I%27d%20like%20to%20see%20how%20an%20AI%20agent%20could%20run%20my%20office." target="_blank" rel="noopener">WhatsApp us</a>
+      </div>
+      <div class="trust"><span>No app to install</span><span>Set up in a day</span><span>Cancel any month</span><span>A human checks it daily</span></div>
+    </div>
+
+    <div class="phone" aria-label="Example WhatsApp conversation with an AiTask agent">
+      <div class="ph-top">
+        <div class="av"><svg width="20" height="20" viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="16" fill="#0f1b2d"/><path d="M32 30 L20 54h6.5l2.4-5.2h6.2l2.4 5.2H44z" fill="#16b5aa"/><path d="M32 12l2.2 6.8L41 21l-6.8 2.2L32 30l-2.2-6.8L23 21l6.8-2.2z" fill="#fff"/></svg></div>
+        <div><b>Office · Maple Home Services</b><small>your AiTask agent · online</small></div>
+      </div>
+      <div class="chat">
+        <div class="msg sys">Today</div>
+        <div class="msg out">📷 Photo · Sarah Mitchell, 12 Elm St. Kitchen walls + ceiling, 2 coats. Send her a quote.<span class="t ck">9:12</span></div>
+        <div class="msg in"><b>Quote Q-1041 · 12 Elm St</b>
+Kitchen 14×12 — walls &amp; ceiling, 2 coats, premium eggshell
+Subtotal $1,840 · HST $239.20 · <b>Total $2,079.20</b>
+Sent to Sarah as a branded PDF with a Review &amp; Sign link.<span class="t">9:14</span></div>
+        <div class="msg in">👀 Sarah opened the quote (2 min ago).<span class="t">11:02</span></div>
+        <div class="msg in">✍️ <b>Signed.</b> Deposit invoice I-1042 ($1,039.60) sent. I pencilled Oct 14–16 on the calendar — say "confirm" and I'll notify the crew.<span class="t">11:06</span></div>
+        <div class="msg out">confirm<span class="t ck">11:07</span></div>
+        <div class="msg in">Done. Marco and Ana have the work order (no prices). Reminder set: deposit chase Thursday if unpaid.<span class="t">11:07</span></div>
+      </div>
+      <div class="chat-in"><span>Message</span><i>➤</i></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section style="padding:36px 0" class="soft">
+  <div class="wrap grid g3">
+    <div><div style="font-size:1.9rem;font-weight:800;color:var(--navy);letter-spacing:-.02em">2 min</div><div class="muted small">from a photo on site to a branded quote in the client's inbox</div></div>
+    <div><div style="font-size:1.9rem;font-weight:800;color:var(--navy);letter-spacing:-.02em">0 missed</div><div class="muted small">follow-ups — every unsigned quote and unpaid invoice is chased on a schedule you approve</div></div>
+    <div><div style="font-size:1.9rem;font-weight:800;color:var(--navy);letter-spacing:-.02em">1 screen</div><div class="muted small">to see clients, jobs, money in, money out and what needs you today</div></div>
+  </div>
+</section>
+
+<!-- WHAT IT DOES -->
+<section id="what">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="eyebrow">What your agent does</span>
+      <h2>The whole office, handled — from one chat</h2>
+      <p>You keep working. The agent keeps the paperwork, the money and the calendar moving, and tells you only when something needs a decision.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card"><div class="ic">📄</div><h3>Quotes &amp; proposals in minutes</h3><p>From a photo, a voice note or three lines. Your prices, your logo, HST included. Sent as a branded PDF with a Review &amp; Sign link.</p></div>
+      <div class="card"><div class="ic blue">✍️</div><h3>E-signatures &amp; tracking</h3><p>You're told the moment a client opens or signs. Signed quote becomes a contract automatically.</p></div>
+      <div class="card"><div class="ic">🧾</div><h3>Invoices, payments, receipts</h3><p>Deposit invoice on signing, balance invoice on completion, receipt on payment. e-Transfer and card. Every dollar lands on the right job.</p></div>
+      <div class="card"><div class="ic blue">⏰</div><h3>Follow-ups that never slip</h3><p>Unsigned quotes, unpaid invoices and quiet leads are chased politely on a schedule you set. Ask "what's open?" any time.</p></div>
+      <div class="card"><div class="ic">📅</div><h3>Scheduling &amp; crew</h3><p>Jobs on a calendar synced to Google. Work orders to your team without prices. A phone app for the crew: hours, tasks, photos, receipts.</p></div>
+      <div class="card"><div class="ic blue">📊</div><h3>Books that stay straight</h3><p>Income, labour, materials and profit per job. Receipts filed. Reconciliation against what actually hit the bank.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="soft" id="demo">
+  <div class="wrap demo-cta">
+    <div>
+      <span class="eyebrow">See it working</span>
+      <h2>A live demo with sample data — click around</h2>
+      <p class="muted" style="font-size:1.05rem">This is the dashboard your agent keeps up to date: clients, projects, documents, calendar, team, accounting and marketing — plus the WhatsApp conversation that drives it. Everything in the demo is fictional, so you can press anything.</p>
+      <ul class="check">
+        <li>Follow a job from quote → signature → deposit → work order → invoice → receipt</li>
+        <li>Open a branded proposal exactly as the client sees it</li>
+        <li>Watch the agent answer in WhatsApp as the job moves</li>
+        <li>Switch on and off the options you'd want</li>
+      </ul>
+      <a class="btn primary" href="demo.html">Open the live demo →</a>
+    </div>
+    <a href="demo.html" class="dash-prev" style="text-decoration:none;color:inherit">
+      <div class="bar"><i></i><i></i><i></i><span>maple-home.aitask.ca · Office dashboard · sample data</span></div>
+      <div class="body">
+        <div class="side"><div class="on">Dashboard</div><div>Calendar</div><div>Clients</div><div>Projects</div><div>Documents</div><div>Team</div><div>Accounting</div><div>Marketing</div><div>WhatsApp</div></div>
+        <div class="main">
+          <div class="kpis"><div class="kpi"><b>$24,180</b><span>Open quotes</span></div><div class="kpi"><b>$6,540</b><span>Unpaid invoices</span></div><div class="kpi"><b>3</b><span>Jobs this week</span></div></div>
+          <div class="row"><div>🔨 Running today — <b>Sarah Mitchell</b> · Kitchen repaint<small> · day 1 of 3</small></div><span class="pill ok dot">Crew on site</span></div>
+          <div class="row"><div>✍️ Awaiting signature — <b>Omar Haddad</b> · Bathroom<small> · opened 2×</small></div><span class="pill warn dot">Chase Thu</span></div>
+          <div class="row"><div>💰 Unpaid — <b>Lakeside Dental</b> · I-1038 $4,520<small> · 9 days</small></div><span class="pill bad dot">Overdue</span></div>
+          <div class="row"><div>📅 Site visit — <b>Priya Nair</b> · Exterior<small> · Wed 10:00</small></div><span class="pill blue dot">Tomorrow</span></div>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- OPTIONS / MODULES -->
+<section id="options">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="eyebrow">Your options</span>
+      <h2>Start with the office. Add what your business needs.</h2>
+      <p>Every agent ships with the core office. Each module below can be switched on for your business — most take a day.</p>
+    </div>
+    <div class="grid g2">
+      <div class="mod"><div class="ic">📄</div><div><h4>Quotes, proposals &amp; e-sign</h4><p>Branded documents, price list, included/excluded wording, tracked opens and signatures.</p></div><span class="pill teal tag">Core</span></div>
+      <div class="mod"><div class="ic">🧾</div><div><h4>Invoices, receipts &amp; payments</h4><p>Deposit and balance invoices, card payment links, receipts, payment reconciliation.</p></div><span class="pill teal tag">Core</span></div>
+      <div class="mod"><div class="ic">💬</div><div><h4>Lead replies in a minute</h4><p>Website, Google and WhatsApp leads answered day or night with two questions and two visit slots.</p></div><span class="pill teal tag">Core</span></div>
+      <div class="mod"><div class="ic">📅</div><div><h4>Scheduling &amp; Google Calendar</h4><p>Jobs and site visits on one calendar, booking page for clients, reminders the day before.</p></div><span class="pill teal tag">Core</span></div>
+      <div class="mod"><div class="ic blue">👷</div><div><h4>Crew app</h4><p>Clock in/out, task lists, job brief, what to bring, photos and receipts from the phone — hours land on the job's cost.</p></div><span class="pill blue tag">Add-on</span></div>
+      <div class="mod"><div class="ic blue">📊</div><div><h4>Accounting &amp; profit per job</h4><p>Income vs. labour, materials and subcontractors. Fixed expenses. Monthly P&amp;L. Export to your bookkeeper or QuickBooks.</p></div><span class="pill blue tag">Add-on</span></div>
+      <div class="mod"><div class="ic blue">📣</div><div><h4>Marketing &amp; reviews</h4><p>Email the clients who never closed, past customers, review requests after every finished job. You check one copy, then it sends.</p></div><span class="pill blue tag">Add-on</span></div>
+      <div class="mod"><div class="ic blue">🤝</div><div><h4>Subcontractor agreements &amp; work orders</h4><p>Signed agreements for outside trades, work orders without prices, confidentiality built in.</p></div><span class="pill blue tag">Add-on</span></div>
+      <div class="mod"><div class="ic navy">🌐</div><div><h4>Website &amp; Google Ads</h4><p>A site that feeds leads straight to the agent, plus managed Google / Meta campaigns if you want them.</p></div><span class="pill tag">Custom</span></div>
+      <div class="mod"><div class="ic navy">🧩</div><div><h4>Anything specific to your trade</h4><p>Inventory, bookings, memberships, fleet, compliance — if a person does it in your office today, we can build an agent for it.</p></div><span class="pill tag">Custom</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="soft" id="how">
+  <div class="wrap">
+    <div class="sec-h"><span class="eyebrow">How it works</span><h2>Running in a day. No app. No training.</h2></div>
+    <div class="grid g3 steps">
+      <div class="card step"><h3>Open a WhatsApp group</h3><p class="muted">Add your AiTask agent to it. That group is your office. Your partner or office manager can be in it too.</p></div>
+      <div class="card step"><h3>Approve the connections once</h3><p class="muted">Your email, your calendar, your price list, your logo — approved from your phone. No passwords are handed to anyone.</p></div>
+      <div class="card step"><h3>You work. The agent works.</h3><p class="muted">Photo in, quote out. A human at AiTask checks every office daily; anything the agent can't do is handled by a person.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-h"><span class="eyebrow">Pricing</span><h2>Simple, monthly, no contract</h2></div>
+    <div class="price">
+      <div class="card">
+        <div class="big">$450<small>CAD / month</small></div>
+        <div class="muted" style="margin-top:.4rem">The office agent — quotes, e-sign, invoices, receipts, follow-ups, leads, scheduling and the dashboard.</div>
+        <ul class="check">
+          <li>Set up in one day. No contract, cancel any month.</li>
+          <li>Connected only to your accounts, approved once from your phone.</li>
+          <li>Never spends money or sends bulk messages without asking you first.</li>
+          <li>A person at AiTask reviews your office every day.</li>
+          <li>Billed by e-Transfer on a monthly invoice, like any supplier.</li>
+        </ul>
+        <div class="cta-row" style="margin-bottom:.4rem"><a class="btn wa" href="https://wa.me/16474508704?text=Hi%20AiTask%2C%20I%27d%20like%20to%20get%20started." target="_blank" rel="noopener">Get started on WhatsApp</a><a class="btn ghost" href="demo.html">See the demo first</a></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:1rem"><h3>Add-ons</h3><p class="muted small">Crew app, accounting &amp; profit, marketing &amp; reviews, subcontractor agreements — each quoted per module, typically a one-time setup plus a small monthly amount.</p></div>
+        <div class="card" style="margin-bottom:1rem"><h3>Custom agents</h3><p class="muted small">Anything specific to your business is scoped in a 20-minute call and quoted as a fixed price. You see a working demo before you pay.</p></div>
+        <div class="note"><b>Founding rate:</b> the first 10 businesses get the office at $225/month for the first two months, in exchange for an honest review.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="soft" id="faq">
+  <div class="wrap" style="max-width:760px">
+    <div class="sec-h"><span class="eyebrow">FAQ</span><h2>Questions business owners ask</h2></div>
+    <details open><summary>Do I need to install anything?</summary><p>No. Your office lives in a private WhatsApp group on the phone you already use, and the dashboard opens in any browser. We set it up in a day.</p></details>
+    <details><summary>Does it use my prices and my logo?</summary><p>Yes. We load your price list and brand once; every quote, invoice and receipt goes out in your name with your terms.</p></details>
+    <details><summary>Can it spend money or message my clients on its own?</summary><p>No. The agent never spends money, never sends a bulk message and never sends a client a new document without your word. Routine follow-ups run on a schedule you approved.</p></details>
+    <details><summary>What if it gets something wrong?</summary><p>Every document is previewed to you before it reaches a client, and a person at AiTask reviews each office daily. Mistakes are corrected and the fix is built into the agent so it doesn't repeat.</p></details>
+    <details><summary>Where is my data?</summary><p>In your own account, on a Canadian-region cloud, backed up daily. It stays yours — export it any time.</p></details>
+    <details><summary>Is the demo real?</summary><p>The demo runs the real dashboard with fictional clients and numbers, so you can click anything. Your office will look the same with your data.</p></details>
+    <details><summary>Who is behind it?</summary><p>AiTask is a Toronto company. The system was built to run a real Toronto contracting business first, then packaged for others.</p></details>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-h"><span class="eyebrow">Talk to a person</span><h2>Message us. A person answers.</h2><p>Tell us what your office does by hand today. We'll show you what the agent would take over — on a 20-minute call or straight in WhatsApp.</p></div>
+    <div class="cta-row">
+      <a class="btn wa" href="https://wa.me/16474508704" target="_blank" rel="noopener">WhatsApp 647-450-8704</a>
+      <a class="btn ghost" href="mailto:info@aitask.ca">info@aitask.ca</a>
+      <a class="btn ghost" href="tel:+16474508704">Call +1 647-450-8704</a>
+    </div>
+    <p class="muted small">Toronto, Ontario · serving the Greater Toronto Area · English &amp; Hebrew</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 AiTask · Toronto · +1 647-450-8704 · info@aitask.ca</div>
+    <div><a href="demo.html">Live demo</a> · <a href="#pricing">Pricing</a> · <a href="#contact">Contact</a></div>
+  </div>
+</footer>
+
+<a class="fab" href="https://wa.me/16474508704" target="_blank" rel="noopener" aria-label="WhatsApp AiTask"><svg viewBox="0 0 32 32"><path d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.4.7 4.7 1.9 6.7L3 29l6.9-2.1c1.9 1 4 1.6 6.1 1.6 7 0 12.7-5.6 12.7-12.6S23 3 16 3zm0 23c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4.1 1.2 1.3-3.9-.3-.4a10.3 10.3 0 0 1-1.7-5.6C5.4 9.8 10.2 5.1 16 5.1s10.6 4.7 10.6 10.5S21.8 26 16 26zm5.8-7.8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.7c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.1-1.2 2.8 1.2 3.2 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.8.7-.1 1.9-.8 2.2-1.6.3-.8.3-1.4.2-1.6l-.6-.3z"/></svg></a>
+
+</body>
+</html>
